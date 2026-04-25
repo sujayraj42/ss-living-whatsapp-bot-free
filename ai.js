@@ -78,7 +78,7 @@ IMPORTANT RULES:
  * Get an AI response for a student's message.
  * Auto-fetches live availability when they ask about vacancies.
  *
- * @param {string} chatId - Green API chatId (e.g. "919142272776@c.us")
+ * @param {string} chatId - WhatsApp phone number (e.g. "919142272776")
  * @param {string} userMessage - The text message from the student
  * @returns {Promise<string>} AI-generated reply text
  */

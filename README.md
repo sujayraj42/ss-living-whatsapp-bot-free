@@ -1,21 +1,10 @@
-# 🏠 SS Living — FREE WhatsApp AI Chatbot
+# 🏠 SS Living — WhatsApp AI Chatbot
 
-**100% FREE forever. No credit card. No paid API. ₹0 cost.**
-
-A smart WhatsApp chatbot for **Shree Shyam Living** PG near LPU, Phagwara.
+Smart WhatsApp chatbot for **Shree Shyam Living** PG near LPU, Phagwara.
 
 Students message on WhatsApp → AI replies instantly in Hindi/English with room info, prices, and can book rooms automatically.
 
----
-
-## 💰 Cost Breakdown
-
-| Service | Cost | What it does |
-|---------|------|-------------|
-| Green API | ₹0 (free forever plan) | Sends & receives WhatsApp messages |
-| Groq AI | ₹0 (free forever) | AI brain that answers student questions |
-| Render.com | ₹0 (free tier) | Hosts this server 24/7 |
-| **TOTAL** | **₹0/month** | **Forever free** |
+**Stack:** Meta WhatsApp Cloud API + Groq AI + Render.com
 
 ---
 
@@ -23,37 +12,38 @@ Students message on WhatsApp → AI replies instantly in Hindi/English with room
 
 | File | What it does |
 |------|-------------|
-| `index.js` | Main server — receives messages, sends replies |
-| `ai.js` | Talks to Groq AI with full SS Living knowledge |
-| `whatsapp.js` | Sends reply messages via Green API |
-| `availability.js` | Checks live room vacancy from SS Living backend |
-| `booking.js` | Submits bookings to SS Living backend |
-| `sessions.js` | Remembers last 10 messages per student |
+| `index.js` | Main server — webhook verification + message handling |
+| `ai.js` | Groq AI with full SS Living knowledge |
+| `whatsapp.js` | Send replies via Meta WhatsApp Cloud API |
+| `availability.js` | Fetch live room vacancy from backend |
+| `booking.js` | Auto-submit bookings to backend |
+| `sessions.js` | Remember last 10 messages per student |
 
 ---
 
-## 🚀 Setup (5 Steps — 15 Minutes Total)
+## 🚀 Setup Guide (Step by Step)
 
 ### Step 1: Get FREE Groq API Key (2 min)
 
 1. Go to **https://console.groq.com**
-2. Sign up with Google — completely free, no credit card
+2. Sign up with Google — free, no credit card
 3. Click **"API Keys"** on the left
 4. Click **"Create API Key"**
-5. Copy the key and save it somewhere
+5. Copy the key and save it
 
-### Step 2: Get FREE Green API Account (5 min)
+### Step 2: Set up Meta WhatsApp Business (10 min)
 
-1. Go to **https://green-api.com**
-2. Click **"Sign Up"** — choose the **FREE plan** (no credit card)
-3. After signup, click **"Create Instance"**
-4. You'll see a QR code on screen
-5. Open WhatsApp on your phone → Settings → Linked Devices → Link a Device
-6. Scan the QR code with your phone camera
-7. Once connected, you'll see:
-   - **Instance ID** (a number like `1234567890`)
-   - **Instance Token** (a long string like `abc123def456...`)
-8. Copy both — you need them in Step 3
+1. Go to **https://developers.facebook.com**
+2. Click **"My Apps"** → **"Create App"**
+3. Choose **"Business"** type → click **"Next"**
+4. Name it "SS Living Bot" → click **"Create App"**
+5. Find **"WhatsApp"** in the products list → click **"Set Up"**
+6. On the **"Get Started"** page you'll see:
+   - **Temporary Access Token** — copy this (this is your `WHATSAPP_TOKEN`)
+   - **Phone Number ID** — copy this too (this is your `WHATSAPP_PHONE_ID`)
+7. **Important:** The temporary token expires every 24 hours. For permanent use:
+   - Go to **Business Settings** → **System Users**
+   - Create a system user → generate a permanent token
 
 ### Step 3: Deploy on Render.com (5 min)
 
@@ -61,7 +51,7 @@ Students message on WhatsApp → AI replies instantly in Hindi/English with room
 2. Click **"New +"** → **"Web Service"**
 3. Connect your GitHub account
 4. Select the **`ss-living-whatsapp-bot-free`** repository
-5. Fill in these settings:
+5. Fill in settings:
    - **Name:** `ss-living-whatsapp-bot-free`
    - **Runtime:** Node
    - **Build Command:** `npm install`
@@ -71,36 +61,33 @@ Students message on WhatsApp → AI replies instantly in Hindi/English with room
 
 | Variable | Value |
 |----------|-------|
-| `GREEN_API_INSTANCE` | *(your Instance ID from Step 2)* |
-| `GREEN_API_TOKEN` | *(your Instance Token from Step 2)* |
-| `GROQ_API_KEY` | *(your API key from Step 1)* |
+| `WHATSAPP_TOKEN` | *(your token from Step 2)* |
+| `WHATSAPP_PHONE_ID` | *(your Phone Number ID from Step 2)* |
+| `WHATSAPP_VERIFY_TOKEN` | `ss_living_secret_2024` |
+| `GROQ_API_KEY` | *(your key from Step 1)* |
 | `BACKEND_URL` | `https://shree-shyam-living.onrender.com/api` |
-| `PORT` | `3000` |
 
 7. Click **"Create Web Service"**
 8. Wait 2-3 minutes for it to deploy
 9. You'll get a URL like: `https://ss-living-whatsapp-bot-free.onrender.com`
 
-### Step 4: Set Webhook in Green API (2 min)
+### Step 4: Register Webhook on Meta (2 min)
 
-1. Go to **https://green-api.com** → log in
-2. Click on your instance
-3. Go to **"Settings"** or **"Webhook Settings"**
-4. In the **Webhook URL** field, paste:
-   ```
-   https://ss-living-whatsapp-bot-free.onrender.com/webhook
-   ```
-5. Make sure these webhook types are ON:
-   - ✅ `incomingMessageReceived`
-6. Click **Save**
+1. Go to **https://developers.facebook.com** → your app → **WhatsApp** → **Configuration**
+2. Under **Webhook**, click **"Edit"**
+3. Enter:
+   - **Callback URL:** `https://ss-living-whatsapp-bot-free.onrender.com/webhook`
+   - **Verify Token:** `ss_living_secret_2024`
+4. Click **"Verify and Save"**
+5. Under **Webhook Fields**, click **"Manage"** and subscribe to: **`messages`**
 
 ### Step 5: Test It! 🎉
 
-1. Open WhatsApp on any phone
-2. Send a message to the number you connected in Step 2
-3. **You should get an AI reply within 3 seconds!** ⚡
+1. Open WhatsApp on your phone
+2. Send a message to the WhatsApp Business number shown in Meta dashboard
+3. The bot should reply within seconds ⚡
 
-Try these messages:
+Try these:
 - "Hi"
 - "What rooms do you have?"
 - "Sabse sasta room konsa hai?"
@@ -110,8 +97,6 @@ Try these messages:
 
 ## ✅ Test Checklist
 
-After deploying, check these:
-
 - [ ] Send "Hi" → Bot greets you and introduces SS Living
 - [ ] Ask "Rooms kya hai?" → Bot lists properties with rent
 - [ ] Ask "Cheapest room?" → Bot suggests NS Pariyal ₹6,500
@@ -120,19 +105,20 @@ After deploying, check these:
 - [ ] Give all 5 details → Bot confirms and submits booking
 - [ ] Send a photo → Bot says "I can only read text messages"
 - [ ] Ask in Hindi "Rent kitna hai?" → Bot replies in Hindi
-- [ ] Visit your Render URL in browser → Shows health check JSON
+- [ ] Visit your Render URL → Shows health check JSON
 
 ---
 
 ## 🔧 Troubleshooting
 
 **Bot not replying?**
-- Check if Green API instance is connected (green dot on dashboard)
-- Check if webhook URL is correctly pasted in Green API settings
-- Check Render logs for errors: go to Render dashboard → your service → Logs
+- Check if WHATSAPP_TOKEN hasn't expired (temporary tokens last 24 hours)
+- Check Render logs: Render dashboard → your service → Logs
+- Make sure you subscribed to the `messages` webhook field in Meta
 
-**Green API disconnected?**
-- Go to green-api.com → your instance → scan QR code again
+**Webhook verification failing?**
+- Make sure `WHATSAPP_VERIFY_TOKEN` in Render matches what you entered in Meta (`ss_living_secret_2024`)
+- Make sure the Render service is running (not sleeping)
 
 **Render service sleeping?**
 - Free tier sleeps after 15 min of no traffic. First message after sleep takes ~30 seconds. This is normal.
@@ -147,4 +133,4 @@ After deploying, check these:
 
 ---
 
-Built with ❤️ for SS Living students | 💰 Total cost: ₹0 forever
+Built with ❤️ for SS Living students

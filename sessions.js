@@ -11,7 +11,7 @@ const MAX_MESSAGES = 10;
 
 /**
  * Get conversation history for a user.
- * @param {string} chatId - Green API chatId (e.g. "919142272776@c.us")
+ * @param {string} chatId - WhatsApp phone number (e.g. "919142272776")
  * @returns {Array<{role: string, content: string}>}
  */
 function getHistory(chatId) {
