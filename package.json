@@ -1,0 +1,21 @@
+{
+  "name": "ss-living-whatsapp-bot-free",
+  "version": "1.0.0",
+  "description": "100% FREE WhatsApp AI Chatbot for Shree Shyam Living PG — Green API + Groq AI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "keywords": ["whatsapp", "chatbot", "free", "green-api", "groq", "pg", "lpu"],
+  "author": "Shree Shyam Living",
+  "license": "ISC"
+}
